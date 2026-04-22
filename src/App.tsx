@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { Send } from 'lucide-react';
+import { GoogleGenAI } from '@google/genai';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -54,6 +55,23 @@ export default function App() {
   const handleSend = async () => {
     const text = inputValue.trim();
     if (!text || isLoading) return;
+
+    // Inicialización de la IA con comprobación de seguridad
+    const apiKey = (window as any).process?.env?.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
+    
+    if (!apiKey) {
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: "ERROR CRÍTICO: La clave GEMINI_API_KEY no está detectada en los sistemas de la estación. Por favor, asegúrate de que la variable de entorno esté configurada.",
+          isError: true
+        }
+      ]);
+      return;
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
 
     const userMessage: Message = { role: 'user' as const, content: text };
     const newMessages = [...messages, userMessage];
