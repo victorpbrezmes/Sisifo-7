@@ -1,0 +1,90 @@
+@import url('https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-fondo-base: #0f1115;
+  --color-panel: #1a1d24;
+  --color-texto-principal: #d1d5db;
+  --color-acento: #d97706;       
+  --color-acento-hover: #b45309; 
+  --color-burbuja-usuario: #1e2532; 
+  --color-texto-usuario: #f3f4f6;   
+  --color-burbuja-bot: #2d241e;     
+  --color-texto-bot: #fcd34d;       
+  --color-borde: #374151;           
+
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+.bg-fondo { background-color: var(--color-fondo-base); }
+.bg-panel { background-color: var(--color-panel); }
+.text-texto-principal { color: var(--color-texto-principal); }
+.text-acento { color: var(--color-acento); }
+.bg-acento { background-color: var(--color-acento); }
+.bg-acento-hover:hover { background-color: var(--color-acento-hover); }
+.border-borde { border-color: var(--color-borde); }
+
+/* Burbujas de Chat */
+.burbuja-usuario { 
+    background-color: var(--color-burbuja-usuario); 
+    color: var(--color-texto-usuario);
+    border: 1px solid var(--color-borde);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.burbuja-bot { 
+    background-color: var(--color-burbuja-bot); 
+    color: var(--color-texto-bot);
+    border: 1px dashed var(--color-acento); 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* Tipografía de contenido renderizado (Markdown/Math) */
+.markdown-content p { margin-bottom: 0.75rem; }
+.markdown-content p:last-child { margin-bottom: 0; }
+.markdown-content code { background-color: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 4px; color: #a78bfa; }
+.katex-display { margin: 1rem 0 !important; overflow-x: auto; overflow-y: hidden; padding-bottom: 5px;}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+    animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+
+/* Indicador Escribiendo... */
+.dot-flashing {
+    position: relative; width: 8px; height: 8px; border-radius: 5px;
+    background-color: var(--color-acento); color: var(--color-acento);
+    animation: dot-flashing 1s infinite linear alternate; animation-delay: 0.5s;
+}
+.dot-flashing::before, .dot-flashing::after {
+    content: ''; display: inline-block; position: absolute; top: 0; width: 8px; height: 8px;
+    border-radius: 5px; background-color: var(--color-acento); color: var(--color-acento);
+    animation: dot-flashing 1s infinite alternate;
+}
+.dot-flashing::before { left: -12px; animation-delay: 0s; }
+.dot-flashing::after { left: 12px; animation-delay: 1s; }
+
+@keyframes dot-flashing {
+    0%, 50% { background-color: var(--color-acento); }
+    100% { background-color: rgba(217, 119, 6, 0.2); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-fondo-base); }
+::-webkit-scrollbar-thumb { background: var(--color-borde); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-acento); }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
